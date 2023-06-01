@@ -1,3 +1,17 @@
+using AutoMapper;
+using Cassandra;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using ms.users.application.Mappers;
+using ms.users.application.Queries.Handlers;
+using ms.users.domain.Interfaces;
+using ms.users.infrastructure.Data;
+using ms.users.infrastructure.Mappings;
+using ms.users.infrastructure.Repositories;
+using System.Reflection;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +20,47 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+// configurar dependencias
+builder.Services.AddSingleton(typeof(CassandraUserMapping));
+builder.Services.AddScoped(typeof(CassandraCluster));
+builder.Services.AddScoped(typeof(IUsersContext), typeof(UsersContext));
+builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+
+var automapperConfig = new MapperConfiguration(mapperConfig =>
+{
+    mapperConfig.AddMaps(typeof(UsersMapperProfile).Assembly);
+});
+
+IMapper mapper = automapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+
+//configurar la autorización del token JWT
+var provider = builder.Services.BuildServiceProvider();
+var configuration = provider.GetRequiredService<IConfiguration>();
+var privateKey = configuration.GetValue<string>("Authentication:JWT:Key");
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(privateKey)),
+        ValidateLifetime = true,
+        RequireExpirationTime = true,
+        ClockSkew = TimeSpan.Zero
+
+    };
+});
 
 var app = builder.Build();
 
@@ -18,6 +73,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
