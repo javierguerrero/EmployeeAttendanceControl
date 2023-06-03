@@ -1,0 +1,10 @@
+
+Creación contenedor con volumen
+	docker run -d -v /c/data/docker/microservices/cassandra:/var/lib/cassandra --name ms.cassandra.db -p 9042:9042 cassandra
+
+Acceso al contenedor que está en ejecución:
+	docker exec -it ms.cassandra.db bash
+
+Despliegue de contenedores en Docker
+	docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
+	

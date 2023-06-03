@@ -5,13 +5,15 @@ VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ms.users", "ms.users", "{74FF6EC4-D2A6-4658-A851-C89F8A40E5DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ms.users.domain", "ms.users\ms.users.domain\ms.users.domain.csproj", "{E8FE7F55-5C72-453C-9530-A58AA70C4D30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ms.users.domain", "ms.users\ms.users.domain\ms.users.domain.csproj", "{E8FE7F55-5C72-453C-9530-A58AA70C4D30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ms.users.infrastructure", "ms.users\ms.users.infrastructure\ms.users.infrastructure.csproj", "{09E3D308-47DF-451D-9BBC-7ED44815BB02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ms.users.infrastructure", "ms.users\ms.users.infrastructure\ms.users.infrastructure.csproj", "{09E3D308-47DF-451D-9BBC-7ED44815BB02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ms.users.application", "ms.users\ms.users.application\ms.users.application.csproj", "{76F01B2A-A6C2-48F4-ABDF-E632ECE8E5F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ms.users.application", "ms.users\ms.users.application\ms.users.application.csproj", "{76F01B2A-A6C2-48F4-ABDF-E632ECE8E5F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ms.users.api", "ms.users\ms.users.api\ms.users.api.csproj", "{17690CDB-E1C8-4966-A2C8-6E6D1847CDAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ms.users.api", "ms.users\ms.users.api\ms.users.api.csproj", "{17690CDB-E1C8-4966-A2C8-6E6D1847CDAB}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{166ABBCB-CA35-406C-A478-1EAB6B470173}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{17690CDB-E1C8-4966-A2C8-6E6D1847CDAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17690CDB-E1C8-4966-A2C8-6E6D1847CDAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17690CDB-E1C8-4966-A2C8-6E6D1847CDAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{166ABBCB-CA35-406C-A478-1EAB6B470173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166ABBCB-CA35-406C-A478-1EAB6B470173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166ABBCB-CA35-406C-A478-1EAB6B470173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166ABBCB-CA35-406C-A478-1EAB6B470173}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

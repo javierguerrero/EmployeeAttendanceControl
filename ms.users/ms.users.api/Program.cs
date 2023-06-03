@@ -1,8 +1,8 @@
 using AutoMapper;
-using Cassandra;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using ms.users.application.Mappers;
 using ms.users.application.Queries.Handlers;
 using ms.users.domain.Interfaces;
@@ -17,9 +17,34 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+//Habilitar el ingreso del Bearer toek a través de la interfaz de Swagger
+builder.Services.AddSwaggerGen(swagger =>
+{
+    swagger.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Users Authentication Api",
+        Version = "v1"
+    });
+    swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Description = "Cabecera de autorización JWT. \r\n Introduzca ['Bearer'] [espacio] [Token].",
+    });
+    swagger.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                          new OpenApiSecurityScheme {
+                              Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme
+                                                                , Id = "Bearer" }
+                          },new string[] {}
+                    }
+                });
+});
 
 
 // configurar dependencias
@@ -35,7 +60,9 @@ var automapperConfig = new MapperConfiguration(mapperConfig =>
 
 IMapper mapper = automapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+builder.Services.AddMediatR(typeof(GetAllUsersQueryHandler).GetTypeInfo().Assembly);
 
 
 //configurar la autorización del token JWT
@@ -58,7 +85,6 @@ builder.Services.AddAuthentication(option =>
         ValidateLifetime = true,
         RequireExpirationTime = true,
         ClockSkew = TimeSpan.Zero
-
     };
 });
 

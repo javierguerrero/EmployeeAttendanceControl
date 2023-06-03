@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  ms.cassandra.db:
+    image: cassandra
+
+  ms.users.api:
+    image: ${DOCKER_REGISTRY-}msusers
+    build:
+      context: .
+      dockerfile: ms.users/ms.users.api/Dockerfile
