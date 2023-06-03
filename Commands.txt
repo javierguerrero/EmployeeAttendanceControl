@@ -1,6 +1,9 @@
+Listar las imágenes instaladas en el equipo
+	docker image ls
 
-Creación contenedor con volumen
+Creación contenedor con volumen (en Windows)
 	docker run -d -v /c/data/docker/microservices/cassandra:/var/lib/cassandra --name ms.cassandra.db -p 9042:9042 cassandra
+	docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=.123Pass456." -p 1433:1433 --name ms.sql.employees.db -v /c/data/docker/microservices/sqlserver:/var/opt/mssql/data -d mcr.microsoft.com/mssql/server:2022-latest
 
 Acceso al contenedor que está en ejecución:
 	docker exec -it ms.cassandra.db bash
@@ -8,3 +11,28 @@ Acceso al contenedor que está en ejecución:
 Despliegue de contenedores en Docker
 	docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
 	
+Crear instancia de imagen cassandra
+	docker run -d --name cassandra-container -p 9042:9042 cassandra
+	
+-
+
+
+CREATE DATABASE EmployeesAttendance
+GO
+USE EmployeesAttendance
+GO
+CREATE TABLE dbo.Employee
+	(empl_username varchar(50) PRIMARY KEY NOT NULL,
+	empl_firstname varchar(100) NOT NULL,
+	empl_lastname varchar(100) NOT NULL,
+	empl_lastattendance DATETIME2 NULL,
+	empl_state int default(0),
+	empl_notes varchar(max) NULL)
+GO
+INSERT dbo.Employee (empl_username
+	,empl_firstname
+	,empl_lastname
+	,empl_lastattendance
+	,empl_state
+	,empl_notes)
+VALUES ('jguerrero', 'Javier', 'Guerrero', NULL, 0, NULL)
