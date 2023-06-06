@@ -19,3 +19,27 @@ services:
       - "9000:80"
     depends_on:
       - ms.cassandra.db
+  
+  ms.sql.employees.db:
+    container_name: ms.sql.employees.db
+    restart: always
+    volumes:
+      - /c/data/docker/microservices/sqlserver:/var/opt/mssql/data
+    ports:
+      - "1433:1433"
+    environment:  #Parametros del comando
+      SA_PASSWORD: ".123Pass456."
+      ACCEPT_EULA: "Y"
+
+  ms.employees.api:
+    container_name: ms.employees.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:EmployeeDB:HostName=ms.sql.employees.db"
+      - "ConnectionStrings:EmployeeDB:Catalogue=EmployeesAttendance"
+      - "ConnectionStrings:EmployeeDB:User=sa"
+      - "ConnectionStrings:EmployeeDB:Password=.123Pass456."
+    ports:
+      - "9010:80"
+    depends_on:
+      - ms.sql.employees.db

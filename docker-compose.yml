@@ -3,9 +3,18 @@ version: '3.4'
 services:
   ms.cassandra.db:
     image: cassandra
+  
+  ms.sql.employees.db:
+    image: mcr.microsoft.com/mssql/server
 
   ms.users.api:
     image: ${DOCKER_REGISTRY-}msusers
     build:
       context: .
       dockerfile: ms.users/ms.users.api/Dockerfile
+
+  ms.employees.api:
+    image: ${DOCKER_REGISTRY-}msemployees
+    build:
+      context: .
+      dockerfile: ms.employees/ms.employees.api/Dockerfile
