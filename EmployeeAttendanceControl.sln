@@ -17,13 +17,23 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ms.employees", "ms.employees", "{33A7E853-1C2D-4364-84F8-FF3ACD597498}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ms.employees.domain", "ms.employees\ms.employees.domain\ms.employees.domain.csproj", "{5ED56313-6C32-4D9A-8FEA-FFC562770A63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ms.employees.domain", "ms.employees\ms.employees.domain\ms.employees.domain.csproj", "{5ED56313-6C32-4D9A-8FEA-FFC562770A63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ms.employees.infrastructure", "ms.employees\ms.employees.infrastructure\ms.employees.infrastructure.csproj", "{94BCFDE2-C735-4291-A185-FDB1C4682248}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ms.employees.infrastructure", "ms.employees\ms.employees.infrastructure\ms.employees.infrastructure.csproj", "{94BCFDE2-C735-4291-A185-FDB1C4682248}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ms.employees.application", "ms.employees\ms.employees.application\ms.employees.application.csproj", "{391954AD-2837-4429-A020-BD2C1166D7E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ms.employees.application", "ms.employees\ms.employees.application\ms.employees.application.csproj", "{391954AD-2837-4429-A020-BD2C1166D7E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ms.employees.api", "ms.employees\ms.employees.api\ms.employees.api.csproj", "{A3774A8A-B973-4867-839C-50F303FE03AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ms.employees.api", "ms.employees\ms.employees.api\ms.employees.api.csproj", "{A3774A8A-B973-4867-839C-50F303FE03AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ms.attendances", "ms.attendances", "{945EBF8A-139A-4B12-82E8-7995940ED3E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ms.attendances.api", "ms.attendances\ms.attendances.api\ms.attendances.api.csproj", "{1B5F1B3E-A446-433C-B34F-019074DBB31B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ms.attendances.application", "ms.attendances\ms.attendances.application\ms.attendances.application.csproj", "{66BC8162-1F6A-4DB3-A736-D462F510AD07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ms.attendances.domain", "ms.attendances\ms.attendances.domain\ms.attendances.domain.csproj", "{EAB938DC-C116-442A-8821-E41605A213C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ms.attendances.infrastructure", "ms.attendances\ms.attendances.infrastructure\ms.attendances.infrastructure.csproj", "{1757300F-8CE6-459D-8319-6F58A35F429D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +77,22 @@ Global
 		{A3774A8A-B973-4867-839C-50F303FE03AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3774A8A-B973-4867-839C-50F303FE03AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3774A8A-B973-4867-839C-50F303FE03AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B5F1B3E-A446-433C-B34F-019074DBB31B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B5F1B3E-A446-433C-B34F-019074DBB31B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B5F1B3E-A446-433C-B34F-019074DBB31B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B5F1B3E-A446-433C-B34F-019074DBB31B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66BC8162-1F6A-4DB3-A736-D462F510AD07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66BC8162-1F6A-4DB3-A736-D462F510AD07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66BC8162-1F6A-4DB3-A736-D462F510AD07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66BC8162-1F6A-4DB3-A736-D462F510AD07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAB938DC-C116-442A-8821-E41605A213C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAB938DC-C116-442A-8821-E41605A213C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAB938DC-C116-442A-8821-E41605A213C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAB938DC-C116-442A-8821-E41605A213C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1757300F-8CE6-459D-8319-6F58A35F429D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1757300F-8CE6-459D-8319-6F58A35F429D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1757300F-8CE6-459D-8319-6F58A35F429D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1757300F-8CE6-459D-8319-6F58A35F429D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +106,10 @@ Global
 		{94BCFDE2-C735-4291-A185-FDB1C4682248} = {33A7E853-1C2D-4364-84F8-FF3ACD597498}
 		{391954AD-2837-4429-A020-BD2C1166D7E4} = {33A7E853-1C2D-4364-84F8-FF3ACD597498}
 		{A3774A8A-B973-4867-839C-50F303FE03AC} = {33A7E853-1C2D-4364-84F8-FF3ACD597498}
+		{1B5F1B3E-A446-433C-B34F-019074DBB31B} = {945EBF8A-139A-4B12-82E8-7995940ED3E0}
+		{66BC8162-1F6A-4DB3-A736-D462F510AD07} = {945EBF8A-139A-4B12-82E8-7995940ED3E0}
+		{EAB938DC-C116-442A-8821-E41605A213C3} = {945EBF8A-139A-4B12-82E8-7995940ED3E0}
+		{1757300F-8CE6-459D-8319-6F58A35F429D} = {945EBF8A-139A-4B12-82E8-7995940ED3E0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43813546-712A-48F5-BE39-2365D53BE8DE}

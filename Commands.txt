@@ -4,15 +4,20 @@ Listar las imágenes instaladas en el equipo
 Creación contenedor con volumen (en Windows)
 	docker run -d -v /c/data/docker/microservices/cassandra:/var/lib/cassandra --name ms.cassandra.db -p 9042:9042 cassandra
 	docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=.123Pass456." -p 1433:1433 --name ms.sql.employees.db -v /c/data/docker/microservices/sqlserver:/var/opt/mssql/data -d mcr.microsoft.com/mssql/server:2022-latest
+	docker run -p 27017:27017 --name ms.mongo.attendance.db -v /c/data/docker/microservices/mongo:/data/db -d mongo
+
 
 Acceso al contenedor que está en ejecución:
 	docker exec -it ms.cassandra.db bash
+	docker exec -it ms.mongo.attendance.db bash
 
 Despliegue de contenedores en Docker
 	docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
 	
 Crear instancia de imagen cassandra
 	docker run -d --name cassandra-container -p 9042:9042 cassandra
+	
+	
 	
 -
 

@@ -7,6 +7,9 @@ services:
   ms.sql.employees.db:
     image: mcr.microsoft.com/mssql/server
 
+  ms.mongo.attendance.db:
+    image: mongo
+
   ms.users.api:
     image: ${DOCKER_REGISTRY-}msusers
     build:
@@ -18,3 +21,9 @@ services:
     build:
       context: .
       dockerfile: ms.employees/ms.employees.api/Dockerfile
+
+  ms.attendances.api:
+    image: ${DOCKER_REGISTRY-}msattendances
+    build:
+      context: .
+      dockerfile: ms.attendances/ms.attendances.api/Dockerfile
