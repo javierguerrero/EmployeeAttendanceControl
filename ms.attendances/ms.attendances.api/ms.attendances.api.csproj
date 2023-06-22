@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ms.communications\ms.rabbitmq\ms.rabbitmq.csproj" />
     <ProjectReference Include="..\ms.attendances.application\ms.attendances.application.csproj" />
     <ProjectReference Include="..\ms.attendances.infrastructure\ms.attendances.infrastructure.csproj" />
   </ItemGroup>

@@ -10,6 +10,9 @@ services:
   ms.mongo.attendance.db:
     image: mongo
 
+  ms.rabbitmq.bus:
+    image: rabbitmq:3-management
+
   ms.users.api:
     image: ${DOCKER_REGISTRY-}msusers
     build:

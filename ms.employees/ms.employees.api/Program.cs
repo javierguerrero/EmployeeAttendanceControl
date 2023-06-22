@@ -1,13 +1,16 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ms.employees.application.HttpCommunications;
 using ms.employees.application.Mappers;
 using ms.employees.application.Queries;
 using ms.employees.domain.Repositories;
 using ms.employees.infrastructure.Data;
 using ms.employees.infrastructure.Repositories;
+using Refit;
 using System.Reflection;
 using System.Text;
 
@@ -23,7 +26,7 @@ builder.Services.AddSwaggerGen(swagger =>
 {
     swagger.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
-        Title = "Users Authentication Api",
+        Title = "Employees Attendance Api",
         Version = "v1"
     });
     swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -58,10 +61,13 @@ builder.Services.AddSingleton(mapper);
 
 builder.Services.AddMediatR(typeof(GetAllEmployeesQuery).GetTypeInfo().Assembly);
 
-
-//configurar la autorización del token JWT
 var provider = builder.Services.BuildServiceProvider();
 var configuration = provider.GetRequiredService<IConfiguration>();
+
+builder.Services.AddRefitClient<IAttendanceApiCommunication>().ConfigureHttpClient(c =>
+ c.BaseAddress = new Uri(configuration.GetSection("Communication:External:AttendanceApiUrl").Value));
+
+//configurar la autorización del token JWT
 var privateKey = configuration.GetValue<string>("Authentication:JWT:Key");
 builder.Services.AddAuthentication(option =>
 {

@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ms.communications\ms.rabbitmq\ms.rabbitmq.csproj" />
     <ProjectReference Include="..\ms.users.application\ms.users.application.csproj" />
     <ProjectReference Include="..\ms.users.domain\ms.users.domain.csproj" />
     <ProjectReference Include="..\ms.users.infrastructure\ms.users.infrastructure.csproj" />

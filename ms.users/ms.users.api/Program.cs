@@ -3,6 +3,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ms.rabbitmq.Consumers;
+using ms.rabbitmq.Middlewares;
+using ms.users.api.Consumers;
+using ms.users.api.Mappers;
 using ms.users.application.Mappers;
 using ms.users.application.Queries.Handlers;
 using ms.users.domain.Interfaces;
@@ -49,21 +53,29 @@ builder.Services.AddSwaggerGen(swagger =>
 
 // configurar dependencias
 builder.Services.AddSingleton(typeof(CassandraUserMapping));
+
 builder.Services.AddScoped(typeof(CassandraCluster));
 builder.Services.AddScoped(typeof(IUsersContext), typeof(UsersContext));
 builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 
+builder.Services.AddTransient(typeof(CassandraCluster));
+builder.Services.AddTransient(typeof(IUsersContext), typeof(UsersContext));
+builder.Services.AddTransient(typeof(IUserRepository), typeof(UserRepository));
+
+builder.Services.AddScoped(typeof(IConsumer), typeof(UsersConsumer));
+
 var automapperConfig = new MapperConfiguration(mapperConfig =>
 {
     mapperConfig.AddMaps(typeof(UsersMapperProfile).Assembly);
+    mapperConfig.AddProfile(typeof(EventMapperProfile));
 });
 
 IMapper mapper = automapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
-//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.AddMediatR(typeof(GetAllUsersQueryHandler).GetTypeInfo().Assembly);
 
+builder.Services.AddSingleton(typeof(IConsumer), typeof(UsersConsumer));
 
 //configurar la autorización del token JWT
 var provider = builder.Services.BuildServiceProvider();
@@ -89,6 +101,9 @@ builder.Services.AddAuthentication(option =>
 });
 
 var app = builder.Build();
+
+var consumer = app.Services.GetRequiredService<IConsumer>();
+app.UseRabbitConsumer(consumer);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

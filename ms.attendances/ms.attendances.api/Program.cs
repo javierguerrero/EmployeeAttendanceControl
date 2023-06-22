@@ -3,14 +3,18 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ms.attendances.api.Consumers;
+using ms.attendances.api.Mappers;
 using ms.attendances.application.Commands;
 using ms.attendances.application.Mappers;
 using ms.attendances.domain.Repositories;
 using ms.attendances.infrastructure.Data;
 using ms.attendances.infrastructure.Mappers;
 using ms.attendances.infrastructure.Repositories;
+using ms.rabbitmq.Consumers;
 using System.Reflection;
 using System.Text;
+using ms.rabbitmq.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +28,7 @@ builder.Services.AddSwaggerGen(swagger =>
 {
     swagger.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
-        Title = "Users Authentication Api",
+        Title = "Historical Attendance Api",
         Version = "v1"
     });
     swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -49,15 +53,23 @@ builder.Services.AddSwaggerGen(swagger =>
 builder.Services.AddScoped(typeof(IAttendanceContext), typeof(AttendanceMongoContext));
 builder.Services.AddScoped(typeof(IAttendanceRepository), typeof(AttendanceRepository));
 
+builder.Services.AddTransient(typeof(IAttendanceContext), typeof(AttendanceMongoContext));
+builder.Services.AddTransient(typeof(IAttendanceRepository), typeof(AttendanceRepository));
+
+
+
 var automapperConfig = new MapperConfiguration(mapperConfig =>
 {
     mapperConfig.AddMaps(typeof(AttendanceProfile).Assembly);
     mapperConfig.AddMaps(typeof(AttendanceMongoProfile).Assembly);
+    mapperConfig.AddProfile(typeof(EventMapperProfile));
 });
 IMapper mapper = automapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 builder.Services.AddMediatR(typeof(CreateAttendanceCommand).GetTypeInfo().Assembly);
+
+builder.Services.AddSingleton(typeof(IConsumer), typeof(AttendancesConsumer));
 
 //configurar la autorización del token JWT
 var provider = builder.Services.BuildServiceProvider();
@@ -83,6 +95,9 @@ builder.Services.AddAuthentication(option =>
 });
 
 var app = builder.Build();
+
+var consumer = app.Services.GetRequiredService<IConsumer>();
+app.UseRabbitConsumer(consumer);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
