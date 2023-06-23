@@ -11,13 +11,9 @@ namespace ms.rabbitmq.Middlewares
         public static IApplicationBuilder UseRabbitConsumer(this IApplicationBuilder app, IConsumer consumer)
         {
             _consumer = consumer;
-
-            IHostApplicationLifetime lifetime = app.ApplicationServices.GetService(typeof(IHostApplicationLifetime))
-                                                                                as IHostApplicationLifetime;
+            IHostApplicationLifetime lifetime = app.ApplicationServices.GetService(typeof(IHostApplicationLifetime)) as IHostApplicationLifetime;
             lifetime.ApplicationStarted.Register(OnStarted);
-
             lifetime.ApplicationStopping.Register(OnStopping);
-
             return app;
         }
 

@@ -1,7 +1,6 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ms.employees.application.HttpCommunications;
@@ -10,6 +9,7 @@ using ms.employees.application.Queries;
 using ms.employees.domain.Repositories;
 using ms.employees.infrastructure.Data;
 using ms.employees.infrastructure.Repositories;
+using ms.rabbitmq.Producers;
 using Refit;
 using System.Reflection;
 using System.Text;
@@ -17,7 +17,6 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -49,6 +48,7 @@ builder.Services.AddSwaggerGen(swagger =>
 });
 
 // Configurar dependencias
+builder.Services.AddScoped(typeof(IProducer), typeof(EventProducer));
 builder.Services.AddScoped(typeof(IDapperContext), typeof(EmployeesDapperContext));
 builder.Services.AddScoped(typeof(IEmployeeRepository), typeof(EmployeeRepository));
 

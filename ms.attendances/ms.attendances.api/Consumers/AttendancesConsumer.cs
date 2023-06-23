@@ -1,15 +1,13 @@
-﻿using System.Text;
-using System.Text.Json;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using ms.attendances.application.Commands;
 using ms.attendances.application.Request;
-using ms.attendances.domain.Repositories;
 using ms.rabbitmq.Consumers;
 using ms.rabbitmq.Events;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Text;
+using System.Text.Json;
 
 namespace ms.attendances.api.Consumers
 {
@@ -19,15 +17,25 @@ namespace ms.attendances.api.Consumers
         private IConnection _connection;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
-        public AttendancesConsumer(IMediator mediator, IMapper mapper,IConfiguration configuration) {
+
+        public AttendancesConsumer(IMediator mediator, IMapper mapper, IConfiguration configuration)
+        {
             _mediator = mediator;
             _mapper = mapper;
             _configuration = configuration;
         }
-        public void Subscribe() {
-            var factory = new ConnectionFactory() {
-                HostName = _configuration.GetValue<string>("Communication:EventBus:HostName") };
 
+        public void Subscribe()
+        {
+            var factory = new ConnectionFactory()
+            {
+                HostName = _configuration.GetValue<string>("Communication:EventBus:HostName")
+            };
+
+            /*
+            * Antes surgía el error: RabbitMQ.Client.Exceptions.BrokerUnreachableException: 'None of the specified endpoints were reachable
+            * Para solucionarlo, reinicio el contenedor 'ms.attendances.api'
+            */
             _connection = factory.CreateConnection();
             var channel = _connection.CreateModel();
 
@@ -39,6 +47,7 @@ namespace ms.attendances.api.Consumers
 
             channel.BasicConsume(queue: queue, autoAck: true, consumer: consumer);
         }
+
         private async void ReceivedEvent(object sender, BasicDeliverEventArgs e)
         {
             if (e.RoutingKey == typeof(AttendanceStateChangedEvent).Name)
@@ -50,7 +59,7 @@ namespace ms.attendances.api.Consumers
                     _mapper.Map<CreateAttendanceRequest>(attendanceStateChangedEvent)));
             }
         }
+
         public void Unsubscribe() => _connection?.Dispose();
-        
     }
 }

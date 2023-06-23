@@ -50,9 +50,9 @@ builder.Services.AddSwaggerGen(swagger =>
                 });
 });
 
-
 // configurar dependencias
 builder.Services.AddSingleton(typeof(CassandraUserMapping));
+builder.Services.AddSingleton(typeof(IConsumer), typeof(UsersConsumer));
 
 builder.Services.AddScoped(typeof(CassandraCluster));
 builder.Services.AddScoped(typeof(IUsersContext), typeof(UsersContext));
@@ -61,8 +61,6 @@ builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 builder.Services.AddTransient(typeof(CassandraCluster));
 builder.Services.AddTransient(typeof(IUsersContext), typeof(UsersContext));
 builder.Services.AddTransient(typeof(IUserRepository), typeof(UserRepository));
-
-builder.Services.AddScoped(typeof(IConsumer), typeof(UsersConsumer));
 
 var automapperConfig = new MapperConfiguration(mapperConfig =>
 {
@@ -74,8 +72,6 @@ IMapper mapper = automapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 builder.Services.AddMediatR(typeof(GetAllUsersQueryHandler).GetTypeInfo().Assembly);
-
-builder.Services.AddSingleton(typeof(IConsumer), typeof(UsersConsumer));
 
 //configurar la autorización del token JWT
 var provider = builder.Services.BuildServiceProvider();

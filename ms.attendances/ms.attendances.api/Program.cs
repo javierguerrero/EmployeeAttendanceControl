@@ -19,7 +19,6 @@ using ms.rabbitmq.Middlewares;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -50,13 +49,13 @@ builder.Services.AddSwaggerGen(swagger =>
                 });
 });
 
+builder.Services.AddSingleton(typeof(IConsumer), typeof(AttendancesConsumer));
+
 builder.Services.AddScoped(typeof(IAttendanceContext), typeof(AttendanceMongoContext));
 builder.Services.AddScoped(typeof(IAttendanceRepository), typeof(AttendanceRepository));
 
 builder.Services.AddTransient(typeof(IAttendanceContext), typeof(AttendanceMongoContext));
 builder.Services.AddTransient(typeof(IAttendanceRepository), typeof(AttendanceRepository));
-
-
 
 var automapperConfig = new MapperConfiguration(mapperConfig =>
 {
@@ -68,8 +67,6 @@ IMapper mapper = automapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 builder.Services.AddMediatR(typeof(CreateAttendanceCommand).GetTypeInfo().Assembly);
-
-builder.Services.AddSingleton(typeof(IConsumer), typeof(AttendancesConsumer));
 
 //configurar la autorización del token JWT
 var provider = builder.Services.BuildServiceProvider();
